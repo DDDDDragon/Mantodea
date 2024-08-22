@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantodea", "Mantodea.csproj", "{AE57566A-4F0A-4E59-83D6-0DABB1A07368}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE57566A-4F0A-4E59-83D6-0DABB1A07368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE57566A-4F0A-4E59-83D6-0DABB1A07368}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE57566A-4F0A-4E59-83D6-0DABB1A07368}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE57566A-4F0A-4E59-83D6-0DABB1A07368}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A95CD9D-9476-449E-B920-E1308EE4A471}
+	EndGlobalSection
+EndGlobal
