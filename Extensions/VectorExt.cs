@@ -13,6 +13,11 @@ namespace Mantodea.Extensions
             return new Vector2((float)Math.Cos((double)rad), (float)Math.Sin((double)rad));
         }
 
+        public static Vector2 Multiply(this Vector2 vec, (int x, int y) turple)
+        {
+            return new(vec.X * turple.x, vec.Y * turple.y);
+        }
+
         public static List<Vector2> Neighbors(this Vector2 v)
         {
             return new() 

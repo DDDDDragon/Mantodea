@@ -22,7 +22,27 @@ namespace Mantodea.Content
             
         }
 
+        public virtual void EditorPreDraw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+
+        }
+
+        public virtual void EditorDraw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+
+        }
+
+        public virtual void EditorPostDraw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+
+        }
+
         public virtual void Update(GameTime gameTime)
+        {
+
+        }
+
+        public virtual void EditorUpdate(GameTime gameTime)
         {
 
         }

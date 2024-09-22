@@ -9,7 +9,7 @@ namespace Mantodea.Content.Components
 
         public int ChildrenMargin = 0;
 
-        public override void Update(GameTime gameTime)
+        public override void SetChildrenRelativePos()
         {
             _width = 0;
 
@@ -21,12 +21,7 @@ namespace Mantodea.Content.Components
                 if (!component.Visible) continue;
                 component.RelativePosition.X = _width;
                 _width += component.Width + ChildrenMargin;
-                component.Update(gameTime);
             }
-
-            base.Update(gameTime);
-
-            if (!_init) _init = true;
         }
     }
 }

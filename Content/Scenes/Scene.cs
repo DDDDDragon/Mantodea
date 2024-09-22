@@ -6,7 +6,7 @@ using Mantodea.Content.Components;
 
 namespace Mantodea.Content.Scenes
 {
-    public class Scene
+    public class Scene : GameContent
     {
         public Main Instace => Main.Instance;
 
@@ -16,7 +16,7 @@ namespace Mantodea.Content.Scenes
 
         public Color BackgroundColor = default;
 
-        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             if (Background != null)
                 spriteBatch.Draw(Background, new Vector2(0, 0), Color.White);
@@ -26,7 +26,7 @@ namespace Mantodea.Content.Scenes
                 component.Draw(spriteBatch, gameTime);
         }
 
-        public virtual void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             foreach (var component in Components)
                 component.Update(gameTime);

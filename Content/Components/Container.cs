@@ -10,7 +10,7 @@ namespace Mantodea.Content.Components
 {
     public abstract class Container : Component
     {
-        internal List<Component> Children = new List<Component>();
+        public List<Component> Children = new List<Component>();
 
         internal int _width;
 
@@ -26,6 +26,12 @@ namespace Mantodea.Content.Components
                 return;
             component.Parent = this;
             Children.Add(component);
+            SetChildrenRelativePos();
+        }
+
+        public virtual void SetChildrenRelativePos()
+        {
+
         }
 
         public override void Update(GameTime gameTime)
@@ -44,13 +50,16 @@ namespace Mantodea.Content.Components
                 }
             }
             base.Update(gameTime);
-            if (!_init) _init = true;
+            SetChildrenRelativePos();
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             if (!_init || !Visible) return;
             base.Draw(spriteBatch, gameTime);
+
+            //TODO 添加是否剪切的选项
+
             foreach (var component in Children)
                 component.Draw(spriteBatch, gameTime);
         }
@@ -59,11 +68,11 @@ namespace Mantodea.Content.Components
         {
             if (SelectChildById(component.id) != null)
                 return;
-            component.Parent = this;
             if (behind)
                 Children.Insert(Children.Count - index, component);
             else
                 Children.Insert(index, component);
+            SetChildrenRelativePos();
         }
 
         public bool ContainsChild(Predicate<Component> match)
@@ -82,6 +91,11 @@ namespace Mantodea.Content.Components
             return Children.FirstOrDefault(match, null) as T;
         }
 
+        public List<Component> SelectChildren(Func<Component, bool> match)
+        {
+            return Children.Where(match).ToList();
+        }
+
         public T SelectChildById<T>(string id) where T : Component
         {
             if (id == "") return null;
@@ -89,7 +103,7 @@ namespace Mantodea.Content.Components
             else return Children.FirstOrDefault(c => c.id == id, null) as T;
         }
 
-        public virtual Component SelectChildById(string id)
+        public Component SelectChildById(string id)
         {
             if (id == "") return null;
             return Children.FirstOrDefault(c => c.id == id, null);

@@ -6,7 +6,7 @@ namespace Mantodea.Extensions
 {
     public static class SpriteBatchExt
     {
-        internal static Texture2D pixel
+        public static Texture2D pixel
         {
             get
             {

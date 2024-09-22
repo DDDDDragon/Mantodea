@@ -7,7 +7,7 @@ namespace Mantodea.Content.Components
 {
     public class SizeContainer : Container
     {
-        internal SizeContainer() { }
+        public SizeContainer() { }
 
         public SizeContainer(int width, int height)
         {

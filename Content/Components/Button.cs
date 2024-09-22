@@ -29,7 +29,7 @@ namespace Mantodea.Content.Components
                 var destination = new Rectangle(Position.ToPoint() + (Size / 2).ToPoint(), Size.ToPoint());
                 if (_isHovering)
                 {
-                    if (_currentMouse.LeftButton == ButtonState.Pressed)
+                    if (UserInput.CurrentMouseState.LeftButton == ButtonState.Pressed)
                         args.spriteBatch.Draw(Press, destination, new(new(0, 0), Size.ToPoint()), Color.White * Alpha, Rotation, Size / 2, SpriteEffects.None, 0);
                     else
                         args.spriteBatch.Draw(Hover, destination, new(new(0, 0), Size.ToPoint()), Color.White * Alpha, Rotation, Size / 2, SpriteEffects.None, 0);

@@ -39,6 +39,7 @@ namespace Mantodea.Content.Components
         public void SwitchToState(string state)
         {
             SelectChildById<SizeContainer>("state").Children = States[state];
+            SelectChildById<SizeContainer>("state").SetChildrenRelativePos();
             CurrentState = state;
         }
 

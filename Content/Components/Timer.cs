@@ -18,14 +18,19 @@ namespace Mantodea.Content.Components
 
         public float[] timer;
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-
-        }
-
         public override void Update(GameTime gameTime)
         {
             OnUpdate?.Invoke(this, gameTime);
+        }
+
+        public override void LeftClick(object sender, int pressTime, Vector2 mouseStart)
+        {
+            
+        }
+
+        public override void RightClick(object sender, int pressTime, Vector2 mouseStart)
+        {
+
         }
 
         public EventHandler<GameTime> OnUpdate;

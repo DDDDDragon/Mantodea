@@ -62,17 +62,18 @@ namespace Mantodea.Content.Components
 
             spriteBatch.Rebegin(samplerState: SamplerState.PointClamp, rasterizerState: RasterizerState.CullNone, 
                 transformMatrix: Transform);
-            spriteBatch.GraphicsDevice.Viewport = new((int)Position.X, (int)Position.Y, _width, _height);
+            spriteBatch.GraphicsDevice.ScissorRectangle = Rectangle;
 
             foreach (var component in Children)
                 component.Draw(spriteBatch, gameTime);
 
             spriteBatch.Rebegin(samplerState: SamplerState.PointClamp, rasterizerState: RasterizerState.CullNone);
-            spriteBatch.GraphicsDevice.Viewport = new(0, 0, 1920, 1200);
+            spriteBatch.GraphicsDevice.ScissorRectangle = new(Point.Zero, Main.GameSize.ToPoint());
         }
 
         public override void Update(GameTime gameTime)
         {
+            /*
             if (Keyboard.GetState().IsKeyDown(Keys.A))
                 MoveCamera(new(-2, 0));
             if (Keyboard.GetState().IsKeyDown(Keys.D))
@@ -80,10 +81,12 @@ namespace Mantodea.Content.Components
             if (Keyboard.GetState().IsKeyDown(Keys.W))
                 MoveCamera(new(0, -2));
             if (Keyboard.GetState().IsKeyDown(Keys.S))
-                MoveCamera(new(0, 2)); 
-            var deltaWheel = _currentMouse.ScrollWheelValue - _previousMouse.ScrollWheelValue;
+                MoveCamera(new(0, 2));
+            */
 
-            if(_isHovering)
+            var deltaWheel = UserInput.GetDeltaWheelValue();
+
+            if (_isHovering)
             {
                 if (deltaWheel > 0)
                     ZoomCamera(1.25f);
@@ -103,7 +106,7 @@ namespace Mantodea.Content.Components
 
             foreach (var child in Children)
             {
-                child.Position = child.RelativePosition;
+                child.Position = child.RelativePosition + Position;
                 child.Update(gameTime);
             }
 
@@ -116,20 +119,13 @@ namespace Mantodea.Content.Components
                 }
             }
 
-            _previousMouse = _currentMouse;
-            _currentMouse = Mouse.GetState();
-
-            var mouseRect = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+            var mouseRect = UserInput.GetMouseRectangle();
 
             _isHovering = false;
 
             if (mouseRect.Intersects(Rectangle))
             {
                 _isHovering = true;
-                if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed && CanClick)
-                {
-                    Clicked = true;
-                }
             }
 
             if (!_init) _init = true;

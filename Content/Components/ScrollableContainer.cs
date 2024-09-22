@@ -55,13 +55,10 @@ namespace Mantodea.Content.Components
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            _previousMouse = _currentMouse;
-            _currentMouse = Mouse.GetState();
-
             ShowVerticalScrollBar = false;
             ShowHorizontalScrollBar = false;
 
-            var deltaWheel = _currentMouse.ScrollWheelValue - _previousMouse.ScrollWheelValue;
+            var deltaWheel = UserInput.GetDeltaWheelValue();
 
             MaxHeight = Height;
 
@@ -110,17 +107,13 @@ namespace Mantodea.Content.Components
                 }
             }
 
-            var mouseRect = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+            var mouseRect = UserInput.GetMouseRectangle();
 
             _isHovering = false;
 
             if (mouseRect.Intersects(Rectangle))
             {
                 _isHovering = true;
-                if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed && CanClick)
-                {
-                    Clicked = true;
-                }
             }
 
             if (!_init) _init = true;

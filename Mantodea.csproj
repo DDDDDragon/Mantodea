@@ -1,14 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageOutputPath>D:\CSharpRepos\NugetPackages</PackageOutputPath>
+	<VersionPrefix>1.3.9</VersionPrefix>
+    <AssemblyVersion></AssemblyVersion>
+    <FileVersion></FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FontStashSharp.MonoGame" Version="1.3.7" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.11.0" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="22.7.31.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>

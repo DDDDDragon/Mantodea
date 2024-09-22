@@ -10,6 +10,17 @@ namespace Mantodea.Content.Components
 {
     public class Component : GameContent
     {
+        public Component()
+        {
+            UserInput.LeftClick += LeftClick;
+
+            UserInput.RightClick += RightClick;
+
+            UserInput.KeepPressLeft += KeepPressLeft;
+
+            UserInput.KeepPressRight += KeepPressRight;
+        }
+
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             if (!Visible)
@@ -44,12 +55,42 @@ namespace Mantodea.Content.Components
             else spriteBatch.Draw(_texture, Position, Color.White);
         }
 
+        public virtual void LeftClick(object sender, int pressTime, Vector2 mouseStart)
+        {
+            var mouseRect = UserInput.GetMouseRectangle();
+
+            if (mouseRect.Intersects(Rectangle))
+            {
+                Clicked = true;
+                OnClick?.Invoke(this, new EventArgs());
+            }
+        }
+
+        public virtual void RightClick(object sender, int pressTime, Vector2 mouseStart)
+        {
+            var mouseRect = UserInput.GetMouseRectangle();
+
+            if (mouseRect.Intersects(Rectangle))
+            {
+                OnRightClick?.Invoke(this, new EventArgs());
+            }
+        }
+
+        public virtual void KeepPressLeft(object sender, int pressTime, Vector2 mouseStart)
+        {
+
+        }
+
+        public virtual void KeepPressRight(object sender, int pressTime, Vector2 mouseStart)
+        {
+
+        }
+
         public override void Update(GameTime gameTime)
         {
-            _previousMouse = _currentMouse;
-            _currentMouse = Mouse.GetState();
+            OnUpdate?.Invoke(this, new EventArgs());
 
-            var mouseRect = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+            var mouseRect = UserInput.GetMouseRectangle();
 
             _isHovering = false;
             Clicked = false;
@@ -58,11 +99,6 @@ namespace Mantodea.Content.Components
             {
                 _isHovering = true;
                 OnHover?.Invoke(this, new EventArgs());
-                if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed && CanClick)
-                {
-                    Clicked = true;
-                    OnClick?.Invoke(this, new EventArgs());
-                }
             }
 
             if (!_init) _init = true;
@@ -91,23 +127,23 @@ namespace Mantodea.Content.Components
             DrawOffset = new(0, 0);
         }
 
-        internal float _alpha = 1;
+        public float _alpha = 1;
 
-        internal MouseState _currentMouse;
+        public SpriteFontBase _font;
 
-        internal SpriteFontBase _font;
+        public bool _isHovering;
 
-        internal bool _isHovering;
+        public Texture2D _texture;
 
-        internal MouseState _previousMouse;
-
-        internal Texture2D _texture;
-
-        internal bool _init = false;
+        public bool _init = false;
 
         public event EventHandler OnClick;
 
         public event EventHandler OnHover;
+
+        public event EventHandler OnUpdate;
+
+        public event EventHandler OnRightClick;
 
         public float Scale;
 
