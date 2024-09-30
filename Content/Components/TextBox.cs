@@ -5,14 +5,16 @@ using Microsoft.Xna.Framework.Input;
 using Mantodea.Content.Components;
 using Mantodea.Content;
 using FontStashSharp;
+using System;
+using System.Text.RegularExpressions;
 
 namespace Mantodea
 {
     public class TextBox : SizeContainer
     {
-        public TextBox(int width, int height, int leftOffset = 5, int charSpacing = 1) : base(width, height)
+        public TextBox(int width, int height, int leftOffset = 5, int charSpacing = 1, bool onlyNumber = false) : base(width, height)
         {
-            Text = "adad";
+            Text = "";
 
             _font = Main.FontManager["JetBrainsMono-Regular", 25];
 
@@ -26,9 +28,14 @@ namespace Mantodea
 
             LeftOffset = leftOffset;
             CharSpacing = charSpacing;
+            OnlyNumber = onlyNumber;
 
             BackgroundColor = Color.White;
         }
+
+        public delegate void TextChangedHandler(object sender, string text);
+
+        public TextChangedHandler OnTextChanged;
 
         public Cursor Cursor;
 
@@ -37,6 +44,8 @@ namespace Mantodea
         public int LeftOffset;
 
         public int CharSpacing;
+
+        public bool OnlyNumber;
 
         private void KeyJustPress(object sender, KeyEventArgs e)
         {
@@ -63,9 +72,17 @@ namespace Mantodea
                     case Keys.V:
                         Cursor.DeleteSelection();
                         var clip = Clipboard.GetClipboardText();
+
+                        if (OnlyNumber)
+                        {
+                            var regex = new Regex("^[0-9]");
+                            clip = regex.Replace(clip, "");
+                        }
+
                         Text = Text.Insert(Cursor.CursorIndex, clip);
                         Cursor.CursorIndex += clip.Length;
                         Cursor.SelectBegin = Cursor.CursorIndex;
+                        OnTextChanged?.Invoke(null, Text);
                         break;
                     case Keys.X:
                         if (UserInput.Ctrl)
@@ -75,6 +92,7 @@ namespace Mantodea
                             if (Cursor.SelectBegin > Cursor.CursorIndex)
                                 Clipboard.SetClipboardText(Text.Substring(Cursor.CursorIndex, Cursor.SelectBegin - Cursor.CursorIndex));
                             Cursor.DeleteSelection();
+                            OnTextChanged?.Invoke(null, Text);
                         }
                         break;
                     case Keys.Left:
@@ -121,10 +139,13 @@ namespace Mantodea
             {
                 if (!e.Character.Equals('\r') && !e.Character.Equals('\n'))
                 {
+                    if (OnlyNumber && (e.Character < 48 || e.Character > 57)) return;
+
                     Cursor.DeleteSelection();
                     Text = Text.Insert(Cursor.CursorIndex, e.Character.ToString());
                     Cursor.CursorIndex++;
                     Cursor.SelectBegin = Cursor.CursorIndex;
+                    OnTextChanged?.Invoke(null, Text);
                 }
             }
         }
@@ -132,6 +153,8 @@ namespace Mantodea
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             base.Draw(spriteBatch, gameTime);
+
+            spriteBatch.Rebegin(samplerState: SamplerState.PointClamp, rasterizerState: RasterizerState.CullNone);
 
             Cursor.Draw(spriteBatch);
 
@@ -156,7 +179,7 @@ namespace Mantodea
                 else
                 {
                     var mouse = UserInput.GetMouseRectangle().Location.ToVector2();
-                    var index = (int)((mouse.X - LeftOffset) / (TextSize(1).X + CharSpacing) + 0.5);
+                    var index = (int)((mouse.X - Position.X - LeftOffset) / (TextSize(1).X + CharSpacing) + 0.5);
                     Cursor.CursorIndex = index;
                     Cursor.SelectBegin = index;
                 }
@@ -175,9 +198,9 @@ namespace Mantodea
 
             var mouse = UserInput.GetMouseRectangle().Location.ToVector2();
 
-            var index = (int)((mouse.X - LeftOffset) / (TextSize(1).X + CharSpacing) + 0.5);
+            var index = (int)((mouse.X - Position.X - LeftOffset) / (TextSize(1).X + CharSpacing) + 0.5);
 
-            var select = (int)((mouseStart.X - LeftOffset) / (TextSize(1).X + CharSpacing) + 0.5);
+            var select = (int)((mouseStart.X - Position.X - LeftOffset) / (TextSize(1).X + CharSpacing) + 0.5);
 
             Cursor.CursorIndex = index;
             Cursor.SelectBegin = select;
@@ -279,8 +302,8 @@ namespace Mantodea
             var cursorPos = TextBox.TextSize(CursorIndex);
             var selectBegin = (int)TextBox.TextSize(SelectBegin).X;
 
-            var x = (int)cursorPos.X + TextBox.LeftOffset;
-            var y = (int)(TextBox.Rectangle.Y + TextBox.Rectangle.Height / 2 - cursorPos.Y / 2);
+            var x = (int)(cursorPos.X + TextBox.Position.X) + TextBox.LeftOffset;
+            var y = (int)(TextBox.Position.Y + TextBox.Rectangle.Height / 2 - cursorPos.Y / 2);
 
             if (selectBegin < cursorPos.X)
                 spriteBatch.Draw(SpriteBatchExt.pixel, new(selectBegin + TextBox.LeftOffset, y, (int)cursorPos.X - selectBegin, (int)TextBox._font.FontSize), null, new Color(153, 201, 239), 0, Vector2.Zero, SpriteEffects.None, 1);

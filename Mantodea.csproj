@@ -3,7 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageOutputPath>D:\CSharpRepos\NugetPackages</PackageOutputPath>
-	<VersionPrefix>1.3.9</VersionPrefix>
+	<VersionPrefix>1.0.6</VersionPrefix>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
   </PropertyGroup>

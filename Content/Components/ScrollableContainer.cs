@@ -44,6 +44,7 @@ namespace Mantodea.Content.Components
             spriteBatch.DrawRectangle(new((int)Position.X, _height - BorderWidth.W + (int)Position.Y, _width, BorderWidth.W), BorderColor);
 
             spriteBatch.Rebegin(samplerState: SamplerState.PointClamp, rasterizerState: RasterizerState.CullNone);
+            spriteBatch.EnableScissor();
             spriteBatch.GraphicsDevice.ScissorRectangle = Rectangle;
 
             foreach (var component in Children)

@@ -6,9 +6,20 @@ using System.Threading.Tasks;
 
 namespace Mantodea.RoomEditor
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, Inherited = true)]
     public class DisplayInEditor : Attribute
     {
+        public DisplayMode DisplayMode;
 
+        public DisplayInEditor(DisplayMode mode)
+        {
+            DisplayMode = mode;
+        }
+    }
+
+    public enum DisplayMode
+    {
+        EditableValue,
+        SelectableValue
     }
 }

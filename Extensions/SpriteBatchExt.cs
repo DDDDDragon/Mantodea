@@ -16,6 +16,13 @@ namespace Mantodea.Extensions
             }
         }
 
+        public static void EnableScissor(this SpriteBatch spriteBatch)
+        {
+            var type = spriteBatch.GetType();
+            var rState = (RasterizerState)type.GetField("_rasterizerState", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(spriteBatch);
+            Change(spriteBatch, rasterizerState: new() { ScissorTestEnable = true, CullMode = rState.CullMode });
+        }
+
         public static void Rebegin(this SpriteBatch spriteBatch, SpriteSortMode sortMode = SpriteSortMode.Deferred, BlendState blendState = null, SamplerState samplerState = null, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, Effect effect = null, Matrix? transformMatrix = null)
         {
             spriteBatch.End();
@@ -44,6 +51,7 @@ namespace Mantodea.Extensions
 
             spriteBatch.Rebegin(sMode, bState, sState, dsState, rState, efct, matrix);
         }
+
         public static void DrawLine(this SpriteBatch batch, Line line, Color color)
         {
             float radian = line.ToVector2().GetRadian();

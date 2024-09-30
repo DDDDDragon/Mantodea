@@ -46,7 +46,7 @@ namespace Mantodea.Content.Components
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Room.View = (Parent as ZoomableContainer).View;
+            Room.View = Parent.View;
             Room.Position = Position;
             Room.EditorUpdate(gameTime);
         }

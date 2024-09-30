@@ -20,6 +20,12 @@ namespace Mantodea.Content.Components
 
         public override int Width => _width;
 
+        public Matrix View;
+
+        public Matrix Projection;
+
+        public Matrix Transform => View * Projection;
+
         public virtual void RegisterChild(Component component)
         {
             if (SelectChildById(component.id) != null && component.id != "")

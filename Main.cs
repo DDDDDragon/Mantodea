@@ -40,6 +40,8 @@ namespace Mantodea
 
         public static GraphicsDeviceManager Graphics;
 
+        public static SpriteBatch SpriteBatch;
+
         public static TextureManager TextureManager;
 
         public static FontManager FontManager;
@@ -84,6 +86,7 @@ namespace Mantodea
             TextureManager.Load();
             FontManager.Load();
             LocalizationManager.Load();
+            UserInput.Initialize();
             // TODO: Add your initialization logic here
 
             base.Initialize();
@@ -93,6 +96,7 @@ namespace Mantodea
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            SpriteBatch = _spriteBatch;
             // TODO: use this.Content to load your game content here
         }
 

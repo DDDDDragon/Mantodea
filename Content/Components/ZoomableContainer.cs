@@ -8,12 +8,6 @@ namespace Mantodea.Content.Components
 {
     public class ZoomableContainer : SizeContainer
     {
-        public Matrix View;
-
-        public Matrix Projection;
-
-        public Matrix Transform => View * Projection;
-
         public float ZoomScale;
 
         public Vector2 CameraPosition;
@@ -62,6 +56,7 @@ namespace Mantodea.Content.Components
 
             spriteBatch.Rebegin(samplerState: SamplerState.PointClamp, rasterizerState: RasterizerState.CullNone, 
                 transformMatrix: Transform);
+            spriteBatch.EnableScissor();
             spriteBatch.GraphicsDevice.ScissorRectangle = Rectangle;
 
             foreach (var component in Children)
@@ -96,9 +91,9 @@ namespace Mantodea.Content.Components
                 if (ZoomScale < 0.2) ZoomScale = 0.2f;
             }
 
-            View = Matrix.CreateTranslation(new(-Size / 2, 0)) *
+            View = Matrix.CreateTranslation(new(-Position - Size / 2, 0)) *
                 Matrix.CreateScale(ZoomScale, ZoomScale, 1) *
-                Matrix.CreateTranslation(new(Size / 2, 0)) *
+                Matrix.CreateTranslation(new(Position + Size / 2, 0)) *
                 Matrix.CreateTranslation(new(CameraPosition * ZoomScale, 0));
 
             Main.CurrentProjection = Projection;
